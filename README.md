@@ -2,6 +2,12 @@
 
 SNS JS is the JavaScript API wrapper for [SeeDAO Name Service](https://github.com/Taoist-Labs/sns).
 
+## Install
+
+```shell
+$ npm i @seedao/sns-js
+```
+
 ## APIs
 
 ## 1.1 Resolve addr from sns
