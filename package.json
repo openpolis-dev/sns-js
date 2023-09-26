@@ -1,7 +1,12 @@
 {
-  "name": "@seedao/sns",
+  "name": "@seedao/sns-js",
   "version": "0.1.0",
+  "private": false,
   "repository": "github:Taoist-Labs/sns-js",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "files": [
