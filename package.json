@@ -1,0 +1,23 @@
+{
+  "name": "@seedao/sns",
+  "version": "0.1.0",
+  "repository": "github:Taoist-Labs/sns-js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib/",
+    "src/",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "ethers": "^6.7.1",
+    "ethereum-multicall": "^2.19.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "prettier": "3.0.3"
+  }
+}
