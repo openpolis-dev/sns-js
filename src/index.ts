@@ -8,7 +8,7 @@ import {
   REVERSE_REGISTRAR_ADDR,
 } from "./constant";
 
-export namespace sns {
+namespace sns {
   export async function resolve(sns: string, rpc?: string): Promise<string> {
     return new Contract(
       PUBLIC_RESOLVER_ADDR,
@@ -119,3 +119,5 @@ export namespace sns {
     }) as string[];
   }
 }
+
+export default sns;
