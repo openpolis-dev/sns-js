@@ -1,6 +1,6 @@
 {
   "name": "@seedao/sns-js",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "homepage": "https://github.com/Taoist-Labs/sns-js",
   "repository": "github:Taoist-Labs/sns-js",
   "publishConfig": {
@@ -12,22 +12,24 @@
     "js",
     "sdk"
   ],
-  "main": "dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/esm/index.d.ts",
+  "main": "lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
   "files": [
-    "dist",
+    "lib",
     "package.json",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs"
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs"
   },
   "dependencies": {
-    "ethereum-multicall": "^2.19.0",
-    "ethers": "^6.7.1"
+    "@seedao/sns-api": "^0.1.1",
+    "@seedao/sns-namehash": "^0.1.0",
+    "@seedao/sns-safe": "^0.1.0"
   },
   "devDependencies": {
     "prettier": "3.0.3",
