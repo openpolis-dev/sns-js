@@ -27,8 +27,8 @@
     "build:cjs": "tsc --module commonjs --outDir lib/cjs"
   },
   "dependencies": {
-    "@seedao/sns-api": "^0.1.1",
-    "@seedao/sns-namehash": "^0.1.0",
+    "@seedao/sns-api": "^0.1.2",
+    "@seedao/sns-namehash": "^0.1.1",
     "@seedao/sns-safe": "^0.1.0"
   },
   "devDependencies": {
