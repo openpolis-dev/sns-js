@@ -17,6 +17,7 @@
   "types": "./lib/esm/index.d.ts",
   "files": [
     "lib",
+    "dist",
     "package.json",
     "README.md",
     "LICENSE"
@@ -32,7 +33,7 @@
   },
   "dependencies": {
     "@seedao/sns-api": "^0.1.2",
-    "@seedao/sns-namehash": "^0.1.1",
+    "@seedao/sns-namehash": "^0.1.4",
     "@seedao/sns-safe": "^0.1.0"
   },
   "devDependencies": {

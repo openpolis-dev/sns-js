@@ -13,8 +13,10 @@ namespace sns {
     safe: boolean = true,
     rpc?: string,
   ): Promise<string> {
-    let nSNS = normalize(sns);
-    if (safe && !s(nSNS)) {
+    // normalize
+    let [ok, nSNS] = normalize(sns);
+    // check correctly and safe
+    if (!ok || (safe && !s(nSNS))) {
       return ""; // SNS is not available
     }
 
@@ -31,8 +33,10 @@ namespace sns {
     rpc?: string,
   ): Promise<string[]> {
     const nSNSArr = snsArr.map((sns) => {
-      let nSNS = normalize(sns);
-      if (safe && !s(nSNS)) {
+      // normalize
+      let [ok, nSNS] = normalize(sns);
+      // check correctly and safe
+      if (!ok || (safe && !s(nSNS))) {
         return ""; // SNS is not available
       }
       return nSNS;
