@@ -16,7 +16,7 @@ namespace sns {
     // normalize
     let [ok, nSNS] = normalize(sns);
     // check correctly and safe
-    if (!ok || (safe && !s(nSNS))) {
+    if (!ok || (safe && !(await s(nSNS)))) {
       return ""; // SNS is not available
     }
 
@@ -32,15 +32,18 @@ namespace sns {
     safe: boolean = true,
     rpc?: string,
   ): Promise<string[]> {
-    const nSNSArr = snsArr.map((sns) => {
-      // normalize
-      let [ok, nSNS] = normalize(sns);
-      // check correctly and safe
-      if (!ok || (safe && !s(nSNS))) {
-        return ""; // SNS is not available
-      }
-      return nSNS;
-    });
+    const nSNSArr = await Promise.all(
+      snsArr.map(async (sns): Promise<string> => {
+        // normalize
+        let [ok, nSNS] = normalize(sns);
+        // check correctly and safe
+        if (!ok || (safe && !(await s(nSNS)))) {
+          return ""; // SNS is not available
+        }
+
+        return nSNS;
+      }),
+    );
 
     // TODO
     return await rs(nSNSArr, rpc);
