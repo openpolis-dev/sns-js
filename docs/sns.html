@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SNS Tester</title>
+  </head>
+  <style>
+    .content {
+      max-width: 500px;
+      margin: auto;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@seedao/sns-js@0.4.0/dist/iife/index.min.js"></script>
+  <script>
+    function getAddr() {
+      const btn = document.getElementById("get_addr_button");
+      btn.innerText = "Getting...";
+      btn.disabled = "disabled";
+
+      const span = document.getElementById("get_addr_span");
+      span.innerText = "";
+
+      const name = document.getElementById("get_addr_input").value;
+      sns.resolve(name + ".seedao").then((r) => {
+        span.innerText = "SNS: " + r;
+
+        btn.innerText = "Get Addr";
+        btn.disabled = "";
+      });
+    }
+
+    function getSNS() {
+      const btn = document.getElementById("get_sns_button");
+      btn.innerText = "Getting...";
+      btn.disabled = "disabled";
+
+      const span = document.getElementById("get_sns_span");
+      span.innerText = "";
+
+      const addr = document.getElementById("get_sns_input").value;
+      sns.name(addr).then((r) => {
+        span.innerText = "SNS: " + r;
+
+        btn.innerText = "Get SNS";
+        btn.disabled = "";
+      });
+    }
+  </script>
+  <body>
+    <div class="content">
+      <form>
+        <label>
+          <input id="get_addr_input" type="text" value="baiyu" />
+          <span>.seedao</span>
+        </label>
+      </form>
+      <button id="get_addr_button" onclick="getAddr()">Get Addr</button>
+      <br />
+      <span id="get_addr_span"></span>
+      <hr />
+      <form>
+        <label>
+          <input
+            id="get_sns_input"
+            type="text"
+            size="64"
+            value="0x8C913aEc7443FE2018639133398955e0E17FB0C1"
+          />
+        </label>
+      </form>
+      <button id="get_sns_button" onclick="getSNS()">Get SNS</button>
+      <br />
+      <span id="get_sns_span"></span>
+    </div>
+  </body>
+</html>
