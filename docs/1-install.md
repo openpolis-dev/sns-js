@@ -1,18 +1,20 @@
 #### 1. npm
 
-install:
+Install:
 
 ```shell
 $ npm i @seedao/sns-js
 ```
 
-then, import `sns` from `@seedao/sns-js` package:
+Then, import `sns` from package:
 
 ```typescript
 import sns from "@seedao/sns-js";
 
 // then you can use `sns.Xxx()` to call functions, for example `const n = await sns.resolve("abc.seedao")`
 ```
+
+Find latest version at: [npmjs.com](https://www.npmjs.com/package/@seedao/sns-js?activeTab=versions)
 
 #### 2. Browser with `iife` format
 
