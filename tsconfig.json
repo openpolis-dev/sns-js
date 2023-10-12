@@ -6,7 +6,7 @@
     "outDir": "./lib/esm",
     "rootDir": "./src",
     "strict": true,
-    "lib": ["es6"],
+    "lib": ["ES6", "DOM"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

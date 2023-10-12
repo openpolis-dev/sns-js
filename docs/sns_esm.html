@@ -1,3 +1,6 @@
+<!-- ++++++ -->
+<!-- Unused -->
+<!-- ++++++ -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,8 +13,13 @@
       margin: auto;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@seedao/sns-js@0.4.3/dist/iife/index.min.js"></script>
-  <script>
+  <script type="module">
+    import sns from "https://cdn.jsdelivr.net/npm/@seedao/sns-js@0.4.3/dist/esm/index.min.js";
+
+    document
+      .getElementById("get_addr_button")
+      .addEventListener("click", getAddr);
+    document.getElementById("get_sns_button").addEventListener("click", getSNS);
     function getAddr() {
       const btn = document.getElementById("get_addr_button");
       btn.innerText = "Querying...";
@@ -28,7 +36,6 @@
         btn.disabled = "";
       });
     }
-
     function getSNS() {
       const btn = document.getElementById("get_sns_button");
       btn.innerText = "Querying...";
@@ -46,6 +53,12 @@
       });
     }
 
+    document
+      .getElementById("get_addr_list_button")
+      .addEventListener("click", getAddrList);
+    document
+      .getElementById("get_sns_list_button")
+      .addEventListener("click", getSNSList);
     function getAddrList() {
       const btn = document.getElementById("get_addr_list_button");
       btn.innerText = "Querying...";
@@ -66,7 +79,6 @@
         btn.disabled = "";
       });
     }
-
     function getSNSList() {
       const btn = document.getElementById("get_sns_list_button");
       btn.innerText = "Querying...";
@@ -93,7 +105,7 @@
           <span>.seedao</span>
         </label>
       </form>
-      <button id="get_addr_button" onclick="getAddr()">Query Addr</button>
+      <button id="get_addr_button">Query Addr</button>
       <br />
       <span id="get_addr_span"></span>
       <form>
@@ -106,7 +118,7 @@
           />
         </label>
       </form>
-      <button id="get_sns_button" onclick="getSNS()">Query SNS</button>
+      <button id="get_sns_button">Query SNS</button>
       <br />
       <span id="get_sns_span"></span>
 
@@ -118,9 +130,7 @@
           <span>.seedao</span>
         </label>
       </form>
-      <button id="get_addr_list_button" onclick="getAddrList()">
-        Query Multi Addr
-      </button>
+      <button id="get_addr_list_button">Query Multi Addr</button>
       <br />
       <span id="get_addr_list_span"></span>
       <form>
@@ -133,9 +143,7 @@
           />
         </label>
       </form>
-      <button id="get_sns_list_button" onclick="getSNSList()">
-        Query Multi SNS
-      </button>
+      <button id="get_sns_list_button">Query Multi SNS</button>
       <br />
       <span id="get_sns_list_span"></span>
     </div>
