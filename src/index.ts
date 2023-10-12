@@ -1,5 +1,5 @@
 import { normalize } from "@seedao/sns-namehash";
-import { safe as s } from "@seedao/sns-safe";
+import { isSafe as isa, safe as s } from "@seedao/sns-safe";
 import {
   resolve as r,
   resolves as rs,
@@ -8,6 +8,7 @@ import {
 } from "@seedao/sns-api";
 
 namespace sns {
+  // sns to address
   export async function resolve(
     sns: string,
     safe: boolean = true,
@@ -16,15 +17,25 @@ namespace sns {
     // normalize
     let [ok, nSNS] = normalize(sns);
     // check correctly and safe
-    if (!ok || (safe && !(await s(nSNS)))) {
-      return ""; // SNS is not available
+    if (!ok || (safe && !(await isa(nSNS)))) {
+      return "0x0000000000000000000000000000000000000000"; // SNS is not safe
     }
 
     return await r(nSNS, rpc);
   }
 
-  export async function name(addr: string, rpc?: string): Promise<string> {
-    return await n(addr, rpc);
+  // address to sns
+  export async function name(
+    addr: string,
+    safe: boolean = true,
+    rpc?: string,
+  ): Promise<string> {
+    const name = await n(addr, rpc);
+    if (safe && !(await isa(name))) {
+      return ""; // SNS is not safe
+    }
+
+    return name;
   }
 
   export async function resolves(
@@ -37,7 +48,7 @@ namespace sns {
         // normalize
         let [ok, nSNS] = normalize(sns);
         // check correctly and safe
-        if (!ok || (safe && !(await s(nSNS)))) {
+        if (!ok || (safe && !(await isa(nSNS)))) {
           return ""; // SNS is not available
         }
 
@@ -45,15 +56,23 @@ namespace sns {
       }),
     );
 
-    // TODO
     return await rs(nSNSArr, rpc);
   }
 
   export async function names(
     addrArr: string[],
+    safe: boolean = true,
     rpc?: string,
   ): Promise<string[]> {
-    return await ns(addrArr, rpc);
+    const names = await ns(addrArr, rpc);
+
+    return safe
+      ? await Promise.all(
+          names.map(async (name): Promise<string> => {
+            return (await isa(name)) ? name : "";
+          }),
+        )
+      : names;
   }
 }
 
