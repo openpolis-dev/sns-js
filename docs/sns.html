@@ -85,6 +85,127 @@
       });
     }
   </script>
+
+  <script async type="module">
+    import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.8.0/ethers.min.js";
+    import {
+      SeeDAORegistrarControllerContract,
+      PublicResolverContract,
+    } from "https://cdn.jsdelivr.net/npm/@seedao/sns-js-advance@0.2.0/dist/esm/index.min.js";
+
+    // 1 Connecting to Ethereum
+    let signer = null;
+    let provider;
+    if (window.ethereum == null) {
+      console.log("MetaMask not installed; using read-only defaults");
+      provider = ethers.getDefaultProvider();
+    } else {
+      provider = new ethers.BrowserProvider(window.ethereum);
+      signer = await provider.getSigner();
+    }
+
+    // 2 Switch chain
+    try {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0xaa36a7" }],
+      });
+    } catch (switchError) {
+      if (switchError.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: "0xaa36a7",
+                chainName: "sepolia",
+                rpcUrls: ["https:&#x2F;&#x2F;ethereum-sepolia.publicnode.com"],
+              },
+            ],
+          });
+        } catch (addError) {
+          console.error("add chain error: ", addError);
+        }
+      }
+      console.error("switch chain error: ", switchError);
+    }
+
+    // 3 Get account
+    const accounts = await window.ethereum
+      .request({ method: "eth_requestAccounts" })
+      .catch((err) => {
+        if (err.code === 4001) {
+          console.log("Please connect to MetaMask.");
+        } else {
+          console.error(err);
+        }
+      });
+    document.getElementById("account").innerText = accounts[0];
+
+
+    // ------ ------ ------ ------ ------ ------ ------ ------ ------
+    // ------ ------ ------ ------ ------ ------ ------ ------ ------
+
+    document
+      .getElementById("register_button")
+      .addEventListener("click", register);
+    async function register() {
+      const btn = document.getElementById("register_button");
+      btn.innerText = "Query Available...";
+      btn.disabled = "disabled";
+
+      const span = document.getElementById("register_span");
+      span.innerText = "";
+
+      const controller =
+        SeeDAORegistrarControllerContract.atSepolia().connect(signer);
+      const resolver = PublicResolverContract.atSepolia().connect(provider);
+
+      const name = document.getElementById("register_input").value;
+      const available = await controller.available(name);
+      if (available) {
+        span.innerText = name + ".seedao" + " is available";
+        btn.innerText = "Register...";
+
+        try {
+          // 1 register
+          const tx = await controller.register(
+            name,
+            signer.address,
+            resolver.target.toString(),
+          );
+
+          // 2 update text
+          span.innerHTML =
+            span.innerText +
+            "<br />" +
+            'txHash: <a href="https://sepolia.etherscan.io/tx/' +
+            tx.hash +
+            '" target="_blank">' +
+            tx.hash +
+            "</a>";
+
+          btn.innerText = "Waiting Tx confirm...";
+
+          // 3 wait tx done
+          await tx.wait();
+
+          span.innerHTML =
+            span.innerHTML + "<br />" + "Tx confirmed, register success!";
+        } catch (e) {
+          span.innerHTML =
+            span.innerText + "<br />" + "Tx failed: " + e.message;
+        }
+
+        btn.innerText = "Register";
+        btn.disabled = "";
+      } else {
+        span.innerText = name + ".seedao" + " is not available";
+        btn.innerText = "Register";
+        btn.disabled = "";
+      }
+    }
+  </script>
   <body>
     <div class="content">
       <form>
@@ -138,6 +259,19 @@
       </button>
       <br />
       <span id="get_sns_list_span"></span>
+
+      <hr />
+
+      <div>Connected:&nbsp;<span id="account"></span></div>
+      <form>
+        <label>
+          <input id="register_input" type="text" value="baiyu" />
+          <span>.seedao</span>
+        </label>
+      </form>
+      <button id="register_button">Register</button>
+      <br />
+      <span id="register_span"></span>
     </div>
   </body>
 </html>
