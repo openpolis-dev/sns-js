@@ -138,21 +138,22 @@
       .request({ method: "eth_requestAccounts" })
       .catch((err) => {
         if (err.code === 4001) {
-          console.log("Please connect to MetaMask.");
+          alert("Please connect to MetaMask.");
         } else {
           console.error(err);
         }
       });
     currentAccount = accounts[0];
-    document.getElementById("account").innerText = currentAccount;
+    document.getElementById("account").innerHTML =
+      "Connected:&nbsp;" + currentAccount;
 
     // 4 Listen account change event
     window.ethereum.on("accountsChanged", function (accounts) {
       if (accounts.length === 0) {
-        console.log("Please connect to MetaMask.");
+        alert("Please connect to MetaMask.");
       } else if (accounts[0] !== currentAccount) {
         currentAccount = accounts[0];
-        document.getElementById("account").innerText = currentAccount;
+        window.location.reload();
       }
     });
 
@@ -229,6 +230,9 @@
   </script>
   <body>
     <div class="content">
+      <div><h3>Chain:&nbsp;sepolia</h3></div>
+      <div><h3 id="account">Waiting for connect wallet...</h3></div>
+
       <form>
         <label>
           <input id="get_addr_input" type="text" value="baiyu" />
@@ -283,8 +287,6 @@
 
       <hr />
 
-      <div>Chain:&nbsp;<span>sepolia</span></div>
-      <div>Connected:&nbsp;<span id="account"></span></div>
       <form>
         <label>
           <input id="register_input" type="text" value="baiyu" />
