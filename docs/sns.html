@@ -93,6 +93,9 @@
       PublicResolverContract,
     } from "https://cdn.jsdelivr.net/npm/@seedao/sns-js-advance@0.2.0/dist/esm/index.min.js";
 
+    let currentAccount = null;
+    let mustChainId = "0xaa36a7";
+
     // 1 Connecting to Ethereum
     let signer = null;
     let provider;
@@ -108,7 +111,7 @@
     try {
       await window.ethereum.request({
         method: "wallet_switchEthereumChain",
-        params: [{ chainId: "0xaa36a7" }],
+        params: [{ chainId: mustChainId }],
       });
     } catch (switchError) {
       if (switchError.code === 4902) {
@@ -117,7 +120,7 @@
             method: "wallet_addEthereumChain",
             params: [
               {
-                chainId: "0xaa36a7",
+                chainId: mustChainId,
                 chainName: "sepolia",
                 rpcUrls: ["https:&#x2F;&#x2F;ethereum-sepolia.publicnode.com"],
               },
@@ -140,8 +143,26 @@
           console.error(err);
         }
       });
-    document.getElementById("account").innerText = accounts[0];
+    currentAccount = accounts[0];
+    document.getElementById("account").innerText = currentAccount;
 
+    // 4 Listen account change event
+    window.ethereum.on("accountsChanged", function (accounts) {
+      if (accounts.length === 0) {
+        console.log("Please connect to MetaMask.");
+      } else if (accounts[0] !== currentAccount) {
+        currentAccount = accounts[0];
+        document.getElementById("account").innerText = currentAccount;
+      }
+    });
+
+    // 5. Listen chain change event
+    window.ethereum.on("chainChanged", function (chainId) {
+      if (chainId !== mustChainId) {
+        alert("Please switch to sepolia chain.");
+        window.location.reload();
+      }
+    });
 
     // ------ ------ ------ ------ ------ ------ ------ ------ ------
     // ------ ------ ------ ------ ------ ------ ------ ------ ------
@@ -262,6 +283,7 @@
 
       <hr />
 
+      <div>Chain:&nbsp;<span>sepolia</span></div>
       <div>Connected:&nbsp;<span id="account"></span></div>
       <form>
         <label>
