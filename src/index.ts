@@ -14,6 +14,10 @@ namespace sns {
     safe: boolean = true,
     rpc?: string,
   ): Promise<string> {
+    if (sns.length == 0) {
+      return "0x0000000000000000000000000000000000000000"; // sns is empty
+    }
+
     // normalize
     let [ok, nSNS] = normalize(sns);
     // check correctly and safe
@@ -30,7 +34,15 @@ namespace sns {
     safe: boolean = true,
     rpc?: string,
   ): Promise<string> {
+    if (addr.length == 0) {
+      return ""; // address is empty
+    }
+
     const name = await n(addr, rpc);
+    if (name.length == 0) {
+      return ""; // address has no sns
+    }
+
     if (safe && !(await isa(name))) {
       return ""; // SNS is not safe
     }
@@ -43,6 +55,10 @@ namespace sns {
     safe: boolean = true,
     rpc?: string,
   ): Promise<string[]> {
+    if (snsArr.length == 0) {
+      return []; // sns array is empty
+    }
+
     const nSNSArr = await Promise.all(
       snsArr.map(async (sns): Promise<string> => {
         // normalize
@@ -64,12 +80,16 @@ namespace sns {
     safe: boolean = true,
     rpc?: string,
   ): Promise<string[]> {
+    if (addrArr.length == 0) {
+      return []; // address array is empty
+    }
+
     const names = await ns(addrArr, rpc);
 
     return safe
       ? await Promise.all(
           names.map(async (name): Promise<string> => {
-            return (await isa(name)) ? name : "";
+            return name.length == 0 ? "" : (await isa(name)) ? name : "";
           }),
         )
       : names;
