@@ -19,13 +19,13 @@ namespace sns {
     }
 
     // normalize
-    let [ok, nSNS] = normalize(sns);
-    // check correctly and safe
-    if (!ok || (safe && !(await isa(nSNS)))) {
+    let [ok, name] = normalize(sns);
+    // checking safe
+    if (!ok || (safe && !(await isa(name)))) {
       return "0x0000000000000000000000000000000000000000"; // SNS is not safe
     }
 
-    return await r(nSNS, rpc);
+    return await r(name, rpc);
   }
 
   // address to sns
@@ -59,20 +59,15 @@ namespace sns {
       return []; // sns array is empty
     }
 
-    const nSNSArr = await Promise.all(
-      snsArr.map(async (sns): Promise<string> => {
-        // normalize
-        let [ok, nSNS] = normalize(sns);
-        // check correctly and safe
-        if (!ok || (safe && !(await isa(nSNS)))) {
-          return ""; // SNS is not available
-        }
+    // normalize
+    const names = snsArr.map((sns): string => {
+      // normalize
+      let [ok, nSNS] = normalize(sns);
+      return ok ? nSNS : "";
+    });
 
-        return nSNS;
-      }),
-    );
-
-    return await rs(nSNSArr, rpc);
+    // checking safe and call resolves
+    return await rs(safe ? await s(names) : names, rpc);
   }
 
   export async function names(
@@ -86,13 +81,7 @@ namespace sns {
 
     const names = await ns(addrArr, rpc);
 
-    return safe
-      ? await Promise.all(
-          names.map(async (name): Promise<string> => {
-            return name.length == 0 ? "" : (await isa(name)) ? name : "";
-          }),
-        )
-      : names;
+    return safe ? await s(names) : names;
   }
 }
 
