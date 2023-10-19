@@ -20,6 +20,17 @@ describe("testing 'index' file", () => {
         "0x0000000000000000000000000000000000000000",
       );
     });
+    it("should return zero address when sns includes unsupported special char", async () => {
+      expect(await sns.resolve("$abc.seedao")).to.be.equal(
+        "0x0000000000000000000000000000000000000000",
+      );
+      expect(await sns.resolve("<abc.seedao")).to.be.equal(
+        "0x0000000000000000000000000000000000000000",
+      );
+      expect(await sns.resolve("#abc.seedao")).to.be.equal(
+        "0x0000000000000000000000000000000000000000",
+      );
+    });
   });
   describe("'resolves' function", () => {
     it("should ok", async () => {
@@ -29,9 +40,13 @@ describe("testing 'index' file", () => {
           "",
           "notexists.seedao",
           "vitalik.seedao",
+          "$abc.seedao",
+          "#abc.seedao",
         ]),
       ).to.eql([
         "0x8C913aEc7443FE2018639133398955e0E17FB0C1",
+        "0x0000000000000000000000000000000000000000",
+        "0x0000000000000000000000000000000000000000",
         "0x0000000000000000000000000000000000000000",
         "0x0000000000000000000000000000000000000000",
         "0x0000000000000000000000000000000000000000",
