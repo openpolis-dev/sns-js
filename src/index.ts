@@ -9,6 +9,7 @@ import {
 
 namespace sns {
   // sns to address
+  // parameter 'sns' example: 'abc.seedao' 'sub.abc.seedao'
   export async function resolve(
     sns: string,
     safe: boolean = true,
@@ -29,6 +30,7 @@ namespace sns {
   }
 
   // address to sns
+  // return value example: 'abc.seedao' 'sub.abc.seedao'
   export async function name(
     addr: string,
     safe: boolean = true,
@@ -50,6 +52,8 @@ namespace sns {
     return name;
   }
 
+  // sns array to address array
+  // parameter 'snssnsArr' example: ['abc.seedao', 'sub.abc.seedao']
   export async function resolves(
     snsArr: string[],
     safe: boolean = true,
@@ -70,6 +74,8 @@ namespace sns {
     return await rs(safe ? await s(names) : names, rpc);
   }
 
+  // address array to sns array
+  // return value example: ['abc.seedao', 'sub.abc.seedao']
   export async function names(
     addrArr: string[],
     safe: boolean = true,

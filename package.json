@@ -23,6 +23,8 @@
     "LICENSE"
   ],
   "scripts": {
+    "prettier": "prettier --write 'src/**/*.{js,ts}'",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register --timeout 20000 'tests/**/*.ts'",
     "package": "npm run build && npm run dist",
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
@@ -35,8 +37,13 @@
     "@seedao/sns-safe": "^0.1.4"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.9",
+    "@types/mocha": "^10.0.3",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
     "esbuild": "^0.19.4",
     "prettier": "3.0.3",
+    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }
 }

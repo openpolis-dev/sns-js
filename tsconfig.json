@@ -13,5 +13,5 @@
     "skipLibCheck": true,
     "sourceMap": false
   },
-  "exclude": ["node_modules", "lib"]
+  "exclude": ["node_modules", "tests", "lib", "dist"]
 }
