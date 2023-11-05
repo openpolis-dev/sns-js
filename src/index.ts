@@ -6,15 +6,12 @@ import {
   name as n,
   names as ns,
 } from "@seedao/sns-api";
+import { PUBLIC_RESOLVER_ADDR, RPC, SAFE_HOST } from "./builtin";
 
 namespace sns {
   // sns to address
   // parameter 'sns' example: 'abc.seedao' 'sub.abc.seedao'
-  export async function resolve(
-    sns: string,
-    safe: boolean = true,
-    rpc?: string,
-  ): Promise<string> {
+  export async function resolve(sns: string, rpc?: string): Promise<string> {
     if (sns.length == 0) {
       return "0x0000000000000000000000000000000000000000"; // sns is empty
     }
@@ -22,30 +19,26 @@ namespace sns {
     // normalize
     let [ok, name] = normalize(sns);
     // checking safe
-    if (!ok || (safe && !(await isa(name)))) {
+    if (!ok || !(await isa(name, SAFE_HOST))) {
       return "0x0000000000000000000000000000000000000000"; // SNS is not safe
     }
 
-    return await r(name, rpc);
+    return await r(name, rpc ?? RPC, PUBLIC_RESOLVER_ADDR);
   }
 
   // address to sns
   // return value example: 'abc.seedao' 'sub.abc.seedao'
-  export async function name(
-    addr: string,
-    safe: boolean = true,
-    rpc?: string,
-  ): Promise<string> {
+  export async function name(addr: string, rpc?: string): Promise<string> {
     if (addr.length == 0) {
       return ""; // address is empty
     }
 
-    const name = await n(addr, rpc);
+    const name = await n(addr, rpc ?? RPC, PUBLIC_RESOLVER_ADDR);
     if (name.length == 0) {
       return ""; // address has no sns
     }
 
-    if (safe && !(await isa(name))) {
+    if (!(await isa(name, SAFE_HOST))) {
       return ""; // SNS is not safe
     }
 
@@ -56,7 +49,6 @@ namespace sns {
   // parameter 'snssnsArr' example: ['abc.seedao', 'sub.abc.seedao']
   export async function resolves(
     snsArr: string[],
-    safe: boolean = true,
     rpc?: string,
   ): Promise<string[]> {
     if (snsArr.length == 0) {
@@ -71,23 +63,26 @@ namespace sns {
     });
 
     // checking safe and call resolves
-    return await rs(safe ? await s(names) : names, rpc);
+    return await rs(
+      await s(names, SAFE_HOST),
+      rpc ?? RPC,
+      PUBLIC_RESOLVER_ADDR,
+    );
   }
 
   // address array to sns array
   // return value example: ['abc.seedao', 'sub.abc.seedao']
   export async function names(
     addrArr: string[],
-    safe: boolean = true,
     rpc?: string,
   ): Promise<string[]> {
     if (addrArr.length == 0) {
       return []; // address array is empty
     }
 
-    const names = await ns(addrArr, rpc);
+    const names = await ns(addrArr, rpc ?? RPC, PUBLIC_RESOLVER_ADDR);
 
-    return safe ? await s(names) : names;
+    return await s(names, SAFE_HOST);
   }
 }
 
