@@ -1,5 +1,8 @@
+// Indexer Server Host
+export const INDEXER_HOST: string = "https://spp-indexer.seedao.tech";
+
 // Safe Server Host
-export const SAFE_HOST: string = "https://test-sns-api.seedao.tech";
+export const SAFE_HOST: string = "https://sns-api.seedao.tech";
 
 // RPCs
 export const RPC: string =

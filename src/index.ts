@@ -6,7 +6,7 @@ import {
   name as n,
   names as ns,
 } from "@seedao/sns-api";
-import { PUBLIC_RESOLVER_ADDR, RPC, SAFE_HOST } from "./builtin";
+import { PUBLIC_RESOLVER_ADDR, RPC, SAFE_HOST, INDEXER_HOST } from "./builtin";
 
 namespace sns {
   // sns to address
@@ -23,7 +23,7 @@ namespace sns {
       return "0x0000000000000000000000000000000000000000"; // SNS is not safe
     }
 
-    return await r(name, rpc ?? RPC, PUBLIC_RESOLVER_ADDR);
+    return await r(name, INDEXER_HOST, rpc ?? RPC, PUBLIC_RESOLVER_ADDR);
   }
 
   // address to sns
@@ -33,7 +33,7 @@ namespace sns {
       return ""; // address is empty
     }
 
-    const name = await n(addr, rpc ?? RPC, PUBLIC_RESOLVER_ADDR);
+    const name = await n(addr, INDEXER_HOST, rpc ?? RPC, PUBLIC_RESOLVER_ADDR);
     if (name.length == 0) {
       return ""; // address has no sns
     }
@@ -65,6 +65,7 @@ namespace sns {
     // checking safe and call resolves
     return await rs(
       await s(names, SAFE_HOST),
+      INDEXER_HOST,
       rpc ?? RPC,
       PUBLIC_RESOLVER_ADDR,
     );
@@ -80,7 +81,12 @@ namespace sns {
       return []; // address array is empty
     }
 
-    const names = await ns(addrArr, rpc ?? RPC, PUBLIC_RESOLVER_ADDR);
+    const names = await ns(
+      addrArr,
+      INDEXER_HOST,
+      rpc ?? RPC,
+      PUBLIC_RESOLVER_ADDR,
+    );
 
     return await s(names, SAFE_HOST);
   }
