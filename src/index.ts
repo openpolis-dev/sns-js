@@ -12,6 +12,22 @@ namespace sns {
   // sns to address
   // parameter 'sns' example: 'abc.seedao' 'sub.abc.seedao'
   export async function resolve(sns: string, rpc?: string): Promise<string> {
+    return await _r(
+      sns,
+      SAFE_HOST,
+      INDEXER_HOST,
+      rpc ?? RPC,
+      PUBLIC_RESOLVER_ADDR,
+    );
+  }
+
+  export async function _r(
+    sns: string,
+    safeHost: string,
+    indexerHost: string,
+    rpc: string,
+    publicResolver: string,
+  ): Promise<string> {
     if (sns.length == 0) {
       return "0x0000000000000000000000000000000000000000"; // sns is empty
     }
@@ -19,26 +35,42 @@ namespace sns {
     // normalize
     let [ok, name] = normalize(sns);
     // checking safe
-    if (!ok || !(await isa(name, SAFE_HOST))) {
+    if (!ok || !(await isa(name, safeHost))) {
       return "0x0000000000000000000000000000000000000000"; // SNS is not safe
     }
 
-    return await r(name, INDEXER_HOST, rpc ?? RPC, PUBLIC_RESOLVER_ADDR);
+    return await r(name, indexerHost, rpc, publicResolver);
   }
 
   // address to sns
   // return value example: 'abc.seedao' 'sub.abc.seedao'
   export async function name(addr: string, rpc?: string): Promise<string> {
+    return await _n(
+      addr,
+      SAFE_HOST,
+      INDEXER_HOST,
+      rpc ?? RPC,
+      PUBLIC_RESOLVER_ADDR,
+    );
+  }
+
+  export async function _n(
+    addr: string,
+    safeHost: string,
+    indexerHost: string,
+    rpc: string,
+    publicResolver: string,
+  ): Promise<string> {
     if (addr.length == 0) {
       return ""; // address is empty
     }
 
-    const name = await n(addr, INDEXER_HOST, rpc ?? RPC, PUBLIC_RESOLVER_ADDR);
+    const name = await n(addr, indexerHost, rpc, publicResolver);
     if (name.length == 0) {
       return ""; // address has no sns
     }
 
-    if (!(await isa(name, SAFE_HOST))) {
+    if (!(await isa(name, safeHost))) {
       return ""; // SNS is not safe
     }
 
@@ -50,6 +82,22 @@ namespace sns {
   export async function resolves(
     snsArr: string[],
     rpc?: string,
+  ): Promise<string[]> {
+    return await _rs(
+      snsArr,
+      SAFE_HOST,
+      INDEXER_HOST,
+      rpc ?? RPC,
+      PUBLIC_RESOLVER_ADDR,
+    );
+  }
+
+  export async function _rs(
+    snsArr: string[],
+    safeHost: string,
+    indexerHost: string,
+    rpc: string,
+    publicResolver: string,
   ): Promise<string[]> {
     if (snsArr.length == 0) {
       return []; // sns array is empty
@@ -63,12 +111,7 @@ namespace sns {
     });
 
     // checking safe and call resolves
-    return await rs(
-      await s(names, SAFE_HOST),
-      INDEXER_HOST,
-      rpc ?? RPC,
-      PUBLIC_RESOLVER_ADDR,
-    );
+    return await rs(await s(names, safeHost), indexerHost, rpc, publicResolver);
   }
 
   // address array to sns array
@@ -77,18 +120,29 @@ namespace sns {
     addrArr: string[],
     rpc?: string,
   ): Promise<string[]> {
-    if (addrArr.length == 0) {
-      return []; // address array is empty
-    }
-
-    const names = await ns(
+    return await _ns(
       addrArr,
+      SAFE_HOST,
       INDEXER_HOST,
       rpc ?? RPC,
       PUBLIC_RESOLVER_ADDR,
     );
+  }
 
-    return await s(names, SAFE_HOST);
+  export async function _ns(
+    addrArr: string[],
+    safeHost: string,
+    indexerHost: string,
+    rpc: string,
+    publicResolver: string,
+  ): Promise<string[]> {
+    if (addrArr.length == 0) {
+      return []; // address array is empty
+    }
+
+    const names = await ns(addrArr, indexerHost, rpc, publicResolver);
+
+    return await s(names, safeHost);
   }
 }
 
