@@ -147,3 +147,5 @@ namespace sns {
 }
 
 export default sns;
+
+export * as builtin from "./builtin";

@@ -1,8 +1,8 @@
 // Indexer Server Host
-export const INDEXER_HOST: string = "https://spp-indexer.seedao.tech";
+export const INDEXER_HOST: string = "https://test-spp-indexer.seedao.tech";
 
 // Safe Server Host
-export const SAFE_HOST: string = "https://sns-api.seedao.tech";
+export const SAFE_HOST: string = "https://test-sns-api.seedao.tech";
 
 // RPCs
 export const RPC: string =
@@ -11,3 +11,9 @@ export const RPC: string =
 // Deployed Addresses
 export const PUBLIC_RESOLVER_ADDR: string =
   "0x4ffCfd37C362B415E4c4A607815f5dB6A297Ed8A"; // PublicResolver contract address
+
+// ---> dev environment
+// export const INDEXER_HOST: string = "http://localhost:3000";
+// export const SAFE_HOST: string = "http://localhost:8090";
+// export const RPC: string = "http://127.0.0.1:8545/";
+// export const PUBLIC_RESOLVER_ADDR: string = "0x0B306BF915C4d645ff596e518fAf3F9669b97016";
