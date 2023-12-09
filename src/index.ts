@@ -5,8 +5,15 @@ import {
   resolves as rs,
   name as n,
   names as ns,
+  tokenId as t,
 } from "@seedao/sns-api";
-import { PUBLIC_RESOLVER_ADDR, RPC, SAFE_HOST, INDEXER_HOST } from "./builtin";
+import {
+  BASE_REGISTRAR_ADDR,
+  PUBLIC_RESOLVER_ADDR,
+  RPC,
+  SAFE_HOST,
+  INDEXER_HOST,
+} from "./builtin";
 
 namespace sns {
   // sns to address
@@ -143,6 +150,38 @@ namespace sns {
     const names = await ns(addrArr, indexerHost, rpc, publicResolver);
 
     return await s(names, safeHost);
+  }
+
+  // get sns's ERC721 token id
+  export async function tokenId(sns: string, rpc?: string): Promise<string> {
+    return await _t(
+      sns,
+      SAFE_HOST,
+      INDEXER_HOST,
+      rpc ?? RPC,
+      BASE_REGISTRAR_ADDR,
+    );
+  }
+
+  export async function _t(
+    sns: string,
+    safeHost: string,
+    indexerHost: string,
+    rpc: string,
+    BaseRegistrar: string,
+  ): Promise<string> {
+    if (sns.length == 0) {
+      return ""; // sns is empty
+    }
+
+    // normalize
+    let [ok, name] = normalize(sns);
+    // checking safe
+    if (!ok || !(await isa(name, safeHost))) {
+      return ""; // SNS is not safe
+    }
+
+    return await t(name, indexerHost, rpc, BaseRegistrar);
   }
 }
 

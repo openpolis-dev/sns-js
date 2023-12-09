@@ -1,11 +1,12 @@
 import { expect } from "chai";
 import sns from "../src";
 
-const indexerHost: string = "http://localhost:3000";
-const safeHost: string = "http://localhost:8090";
+const indexerHost: string = "https://test-spp-indexer.seedao.tech";
+const safeHost: string = "https://test-sns-api.seedao.tech";
 const rpc: string =
-  "https://eth-sepolia.g.alchemy.com/v2/H43zK7UnIN2v7u2ZoTbizIPnXkylKIZl";
-const publicResolver: string = "0x4ffCfd37C362B415E4c4A607815f5dB6A297Ed8A";
+  "https://eth-goerli.g.alchemy.com/v2/MATWeLJN1bEGTjSmtyLedn0i34o1ISLD";
+const publicResolver: string = "0x01578E194eB8789EA1eeC88CDf8C70B879ad2766"; // PublicResolver contract address
+const baseRegistrar: string = "0x620d50BEFB7471b574D225E0C90985520e7dd3fE"; // BaseRegistrar contract address
 
 describe("testing 'index' file", () => {
   describe("'resolve' function", () => {
@@ -157,6 +158,20 @@ describe("testing 'index' file", () => {
       expect(await sns._ns(addrArr, safeHost, "", rpc, publicResolver)).to.eql(
         wantArr,
       );
+    });
+  });
+
+  describe("'tokenId' function", () => {
+    it("Query Indexer Success", async () => {
+      expect(
+        await sns._t("baiyu.seedao", safeHost, indexerHost, "", ""),
+      ).to.be.equal("53");
+    });
+
+    it("Query Contract Success", async () => {
+      expect(
+        await sns._t("baiyu.seedao", safeHost, "", rpc, baseRegistrar),
+      ).to.be.equal("53");
     });
   });
 });
