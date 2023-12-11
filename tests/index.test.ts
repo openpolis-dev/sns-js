@@ -166,12 +166,20 @@ describe("testing 'index' file", () => {
       expect(
         await sns._t("baiyu.seedao", safeHost, indexerHost, "", ""),
       ).to.be.equal("53");
+
+      expect(
+        await sns._t("notexists.seedao", safeHost, indexerHost, "", ""),
+      ).to.be.equal("");
     });
 
     it("Query Contract Success", async () => {
       expect(
         await sns._t("baiyu.seedao", safeHost, "", rpc, baseRegistrar),
       ).to.be.equal("53");
+
+      expect(
+        await sns._t("baiyu2.seedao", safeHost, "", rpc, baseRegistrar),
+      ).to.be.equal("notexists");
     });
   });
 });

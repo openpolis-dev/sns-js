@@ -10,13 +10,15 @@ export const RPC: string =
 
 // Deployed Addresses
 export const BASE_REGISTRAR_ADDR: string =
-  "0x620d50BEFB7471b574D225E0C90985520e7dd3fE"; // BaseRegistrar contract address
+  "0x4C53Ff1A6a47E7089e1E727f83e7b7aEFCC9796B"; // BaseRegistrar contract address
 export const SEEDAO_REGISTRAR_CONTROLLER_ADDR: string =
-  "0x750071DB1Df9ba74D77a92591e039707dca2CFb8"; // SeeDAORegistrarController contract address
+  "0x78d29889bCa13A477b25933923732FF562DcC7Cd"; // SeeDAORegistrarController contract address
 export const PUBLIC_RESOLVER_ADDR: string =
-  "0x01578E194eB8789EA1eeC88CDf8C70B879ad2766"; // PublicResolver contract address
+  "0x6A80eA63cFfc6B10B764e1f26348832835520646"; // PublicResolver contract address
 export const SEEDAO_MINTER_ADDR: string =
-  "0xbf2d49D4429C68Ce7D563b054F88C957406a36D4"; // SeeDAOMinter contract address
+  "0x618702B04DC94ACca487aE888Fd986adfC2f66d2"; // SeeDAOMinter contract address
+export const SEEDAO_ACTIVITY_MINTER_ADDR =
+  "0x41B6ECd5BC6Bca0Ca6F9C1c01FfEa6a6b24fF59f"; // SeeDAOActivityMinter contract address
 
 // ---> dev environment
 // export const INDEXER_HOST: string = "http://localhost:3000";
