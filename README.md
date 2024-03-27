@@ -4,4 +4,4 @@ SNS JS is the JavaScript API wrapper for [SeeDAO Name Service](https://github.co
 
 ## How to use this sdk?
 
-[Read the docs](https://taoist-labs.github.io/sns-js/)
+[Read the docs](https://docs.seedao.tech/sns/intro)
