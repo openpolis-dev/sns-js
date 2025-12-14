@@ -109,6 +109,9 @@ namespace sns {
     if (snsArr.length == 0) {
       return []; // sns array is empty
     }
+    if (snsArr.length > 300) {
+      throw new Error("sns array is too large, max length is 300");
+    }
 
     // normalize
     const names = snsArr.map((sns): string => {
@@ -145,6 +148,9 @@ namespace sns {
   ): Promise<string[]> {
     if (addrArr.length == 0) {
       return []; // address array is empty
+    }
+    if (addrArr.length > 300) {
+      throw new Error("address array is too large, max length is 300");
     }
 
     const names = await ns(addrArr, indexerHost, rpc, publicResolver);
